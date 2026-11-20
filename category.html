@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Choose Interview</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        .category-card {
+            border: none;
+            width: 100%;
+            padding: 35px 20px;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+        }
+
+        .category-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .category-card h2 {
+            margin: 10px 0;
+        }
+
+        .category-card p {
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        🤖 AI <span>Interview</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+        <a href="{{ url_for('category') }}">
+            Interview
+        </a>
+
+        <a href="{{ url_for('result') }}">
+            Results
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h1>Choose Your Interview</h1>
+
+        <p>
+            Select a category to start your AI interview.
+        </p>
+
+    </div>
+
+
+    <div class="category-grid">
+
+
+        <!-- TECHNICAL -->
+
+        <button
+            type="button"
+            class="category-card"
+            onclick="startInterview('technical')">
+
+            <div class="category-icon">
+                💻
+            </div>
+
+            <h2>
+                Technical
+            </h2>
+
+            <p>
+                Test your technical and
+                problem-solving skills.
+            </p>
+
+        </button>
+
+
+        <!-- HR -->
+
+        <button
+            type="button"
+            class="category-card"
+            onclick="startInterview('hr')">
+
+            <div class="category-icon">
+                👔
+            </div>
+
+            <h2>
+                HR Interview
+            </h2>
+
+            <p>
+                Practice common HR
+                interview questions.
+            </p>
+
+        </button>
+
+
+        <!-- PYTHON -->
+
+        <button
+            type="button"
+            class="category-card"
+            onclick="startInterview('python')">
+
+            <div class="category-icon">
+                🐍
+            </div>
+
+            <h2>
+                Python
+            </h2>
+
+            <p>
+                Test your Python
+                programming knowledge.
+            </p>
+
+        </button>
+
+
+        <!-- CLOUD -->
+
+        <button
+            type="button"
+            class="category-card"
+            onclick="startInterview('cloud')">
+
+            <div class="category-icon">
+                ☁️
+            </div>
+
+            <h2>
+                Cloud / DevOps
+            </h2>
+
+            <p>
+                Practice Cloud Computing
+                and DevOps questions.
+            </p>
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function startInterview(category) {
+
+    window.location.href =
+        "/interview?category=" + category;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

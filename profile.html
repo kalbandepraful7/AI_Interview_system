@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | AI Interview System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        .photo-section {
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #e0e7ff;
+            background: #eef2ff;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 11px 18px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .upload-label:hover {
+            background: #3730a3;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .profile-info h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .profile-info p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .status {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        .details {
+            padding-top: 30px;
+        }
+
+        .details h3 {
+            font-size: 20px;
+            margin-bottom: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        .form-group input {
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px #e0e7ff;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 23px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .save-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #3730a3;
+        }
+
+        .back-btn {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #166534;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px auto;
+            }
+
+            .profile-card {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar {
+                padding: 16px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>AI Interview System</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/profile">My Profile</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="heading">
+            <h1>My Profile</h1>
+            <p>Manage your personal information and profile photo.</p>
+        </div>
+
+        <div class="profile-card">
+
+            <div class="profile-top">
+
+                <div class="photo-section">
+                    
+<img
+    class="profile-photo"
+    src="{{ url_for('static', filename='uploads/' ~ (user['profile_photo'] if user and user['profile_photo'] else 'default.png')) }}"
+    alt="Profile Photo"
+    onerror="this.onerror=null; this.src='/static/uploads/default.png';"
+>
+    
+
+<form class="photo-upload-form"
+      action="{{ url_for('upload_photo') }}"
+      method="POST"
+      enctype="multipart/form-data">
+
+    <input
+        type="file"
+        name="photo"
+        accept=".png,.jpg,.jpeg,.webp"
+        required
+    >
+
+    <button type="submit">Upload Photo</button>
+</form>
+
+>
+
+
+                 >
+
+                    <form action="/upload-photo"
+                          method="POST"
+                          enctype="multipart/form-data">
+
+                        <label for="photoInput" class="upload-label">
+                            📷 Upload Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="photoInput"
+                            name="photo"
+                            accept="image/png,image/jpeg,image/webp"
+                            required
+                        >
+
+                        <div style="margin-top: 12px;">
+                            <button type="submit" class="btn save-btn">
+                                Save Photo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="profile-info">
+                    <h2>
+                        {{ user.name if user and user.name else 'Your Name' }}
+                    </h2>
+
+                    <p>AI Interview System User</p>
+                    <p>Update your profile and keep your information current.</p>
+
+                    <span class="status">● Profile</span>
+                </div>
+
+            </div>
+
+            <div class="details">
+                <h3>Personal Information</h3>
+
+                <form action="/update-profile" method="POST">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your full name"
+                                value="{{ user.name if user and user.name else '' }}"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                value="{{ user.email if user and user.email else '' }}"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                value="{{ user.phone if user and user.phone else '' }}"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Career / Role</label>
+                            <input
+                                type="text"
+                                id="role"
+                                name="role"
+                                placeholder="e.g. Software Developer"
+                                value="{{ user.role if user and user.role else '' }}"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="buttons">
+                        <button type="submit" class="btn save-btn">
+                            Save Changes
+                        </button>
+
+                        <a href="/" class="btn back-btn">
+                            Back to Home
+                        </a>
+                    </div>
+
+                </form>
+
+                {% if request.args.get('success') %}
+                    <p class="message">Profile updated successfully!</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const photoInput = document.getElementById("photoInput");
+        const profilePreview = document.getElementById("profilePreview");
+
+        photoInput.addEventListener("change", function () {
+            const file = this.files[0];
+
+            if (!file) return;
+
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image file.");
+                this.value = "";
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Please select an image smaller than 5 MB.");
+                this.value = "";
+                return;
+            }
+
+            profilePreview.src = URL.createObjectURL(file);
+        });
+    </script>
+
+</body>
+</html>

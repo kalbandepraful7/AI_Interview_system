@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Interview</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .interview-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .timer-box {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+        }
+
+        .timer-title {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        #timer {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .interview-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .category-name {
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+
+        .question-number {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        .question {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .answer-box {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .answer-box:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .submit-button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #333;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            opacity: 0.85;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🤖 AI <span>Interview</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+        <a href="{{ url_for('category') }}">
+            Interview
+        </a>
+
+        <a href="{{ url_for('result') }}">
+            Results
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= INTERVIEW ================= -->
+
+<div class="interview-container">
+
+
+    <!-- TIMER -->
+
+    <div class="timer-box">
+
+        <div class="timer-title">
+            ⏱️ Time Remaining
+        </div>
+
+        <div id="timer">
+            10:00
+        </div>
+
+    </div>
+
+
+    <!-- INTERVIEW CARD -->
+
+    <div class="interview-card">
+
+
+        <div class="category-name">
+
+            {{ category }} Interview
+
+        </div>
+
+
+        <div class="question-number">
+
+            Question {{ question_number }}
+            of {{ total_questions }}
+
+        </div>
+
+
+        <div class="question">
+
+            {{ question }}
+
+        </div>
+
+
+        <form method="POST"
+              action="{{ url_for('submit_answer') }}"
+              id="answerForm">
+
+
+            <textarea
+                name="answer"
+                class="answer-box"
+                placeholder="Type your answer here..."
+                required></textarea>
+
+
+            <button
+                type="submit"
+                class="submit-button">
+
+                {% if question_number == total_questions %}
+
+                    Submit Interview
+
+                {% else %}
+
+                    Next Question →
+
+                {% endif %}
+
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<!-- ================= TIMER SCRIPT ================= -->
+
+<script>
+
+    /*
+       10 minutes = 600 seconds
+    */
+
+    let timeLeft = 10 * 60;
+
+
+    function updateTimer() {
+
+        let minutes = Math.floor(
+            timeLeft / 60
+        );
+
+        let seconds = timeLeft % 60;
+
+
+        seconds = seconds
+            .toString()
+            .padStart(2, "0");
+
+
+        document.getElementById("timer")
+            .textContent =
+            minutes + ":" + seconds;
+
+
+        if (timeLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            alert(
+                "⏰ Time is over! Your interview will be submitted."
+            );
+
+
+            document.getElementById(
+                "answerForm"
+            ).submit();
+
+
+            return;
+        }
+
+
+        timeLeft--;
+
+    }
+
+
+    updateTimer();
+
+
+    let timerInterval = setInterval(
+        updateTimer,
+        1000
+    );
+
+</script>
+
+
+</body>
+
+</html>
